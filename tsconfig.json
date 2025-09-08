@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/frontend" },
+    { "path": "./apps/backend" },
+    { "path": "./packages/common" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@common/*": ["packages/common/*"]
+    },
+    "skipLibCheck": true
+  }
+}

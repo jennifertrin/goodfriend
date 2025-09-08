@@ -1,0 +1,29 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles for Be A Good Friend */
+body {
+	@apply bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen antialiased;
+}
+
+/* Scrollbar styling for modern look */
+::-webkit-scrollbar {
+	width: 8px;
+	background: #e0e7ef;
+}
+::-webkit-scrollbar-thumb {
+	background: #a5b4fc;
+	border-radius: 8px;
+}
+
+/* Card shadow utility for consistent card look */
+.card-shadow {
+	@apply shadow-lg border border-blue-100 rounded-2xl bg-white/90;
+}
+
+/* Button gradient utility */
+.btn-gradient {
+	@apply bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow hover:from-blue-600 hover:to-blue-800 transition-colors;
+}

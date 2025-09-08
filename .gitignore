@@ -1,0 +1,38 @@
+# Node
+node_modules/
+
+# Build output
+.next/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+
+# Env
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Misc
+*.local
+
+# Test
+coverage/
+
+# Mac
+Icon?
+
+# Lint
+.eslintcache
+
+# By default, ignore everything in node_modules
+**/node_modules/
