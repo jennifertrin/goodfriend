@@ -1,25 +1,52 @@
 import React, { useState } from 'react';
+import { askNLWebAboutContact } from '../utils/askNLWeb';
 import Head from 'next/head';
 import ContactList from '../components/ContactList';
 import AIChat from '../components/AIChat';
 import MessageOptions from '../components/MessageOptions';
 import Preferences from '../components/Preferences';
 
-const mockContacts = [
-  { id: '1', name: 'Alex Johnson', lastMessaged: '2025-04-01', highlights: ['Started new job at Acme Corp.'] },
-  { id: '2', name: 'Jamie Lee', lastMessaged: '2025-03-15', highlights: ['Moved to San Francisco.'] },
-  { id: '3', name: 'Morgan Smith', lastMessaged: null, highlights: ['Graduated from university.'] },
+// Mock data: real LinkedIn influencers
+const influencerContacts = [
+  {
+    id: '1',
+    name: 'Reid Hoffman',
+    lastMessaged: '2025-05-01',
+    highlights: ['Started new podcast: Masters of Scale', 'Co-founded LinkedIn'],
+    profileUrl: 'https://www.linkedin.com/in/reidhoffman/'
+  },
+  {
+    id: '2',
+    name: 'Melinda Gates',
+    lastMessaged: '2025-04-15',
+    highlights: ['Keynote at Women in Tech Summit', 'Co-chair at Bill & Melinda Gates Foundation'],
+    profileUrl: 'https://www.linkedin.com/in/melindagates/'
+  },
+  {
+    id: '3',
+    name: 'Satya Nadella',
+    lastMessaged: '2025-03-20',
+    highlights: ['Announced new Microsoft AI initiative', 'Published book: Hit Refresh'],
+    profileUrl: 'https://www.linkedin.com/in/satyanadella/'
+  },
+  {
+    id: '4',
+    name: 'Arianna Huffington',
+    lastMessaged: '2025-02-10',
+    highlights: ['Launched Thrive Global campaign', 'Spoke at World Economic Forum'],
+    profileUrl: 'https://www.linkedin.com/in/ariannahuffington/'
+  },
+  {
+    id: '5',
+    name: 'Simon Sinek',
+    lastMessaged: '2025-01-05',
+    highlights: ['Released new TED Talk', 'Bestselling author: Start With Why'],
+    profileUrl: 'https://www.linkedin.com/in/simonsinek/'
+  }
 ];
 
-function monthsSince(dateStr) {
-  if (!dateStr) return 999;
-  const then = new Date(dateStr);
-  const now = new Date();
-  return (now.getFullYear() - then.getFullYear()) * 12 + (now.getMonth() - then.getMonth());
-}
-
-
 export default function Home() {
+  const [contacts] = useState(influencerContacts);
   const [selectedContact, setSelectedContact] = useState(null);
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,8 +59,7 @@ export default function Home() {
   const [messageDraft, setMessageDraft] = useState('');
   const [autoMessage, setAutoMessage] = useState('');
 
-  // Filter contacts not messaged in 3+ months
-  const contactsToShow = mockContacts.filter(c => monthsSince(c.lastMessaged) >= 3);
+  const contactsToShow = contacts;
 
   const handleSelect = (contact) => {
     setSelectedContact(contact);
@@ -42,16 +68,14 @@ export default function Home() {
     setAutoMessage('');
   };
 
-  // Simulate NLPWeb API call
+  // Call NLWeb for AI Q&A
   const handleAsk = async (question) => {
     setLoading(true);
-    let answer = '';
-    if (question.toLowerCase().includes('why')) {
-      answer = `You haven't messaged ${selectedContact.name} in a while. Notable: ${selectedContact.highlights.join(', ')}`;
-    } else if (question.toLowerCase().includes('what')) {
-      answer = `You could mention: ${selectedContact.highlights.join(', ')}.`;
-    } else {
-      answer = `Try asking about their recent highlights or why they are suggested.`;
+    let answer = 'No answer found.';
+    try {
+      answer = await askNLWebAboutContact({ contact: selectedContact, question });
+    } catch (e) {
+      answer = 'Error contacting NLWeb.';
     }
     setChatHistory(h => [...h, { question, answer }]);
     setLoading(false);

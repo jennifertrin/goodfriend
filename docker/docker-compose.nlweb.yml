@@ -1,0 +1,11 @@
+# NLWeb Server Docker Compose
+
+services:
+  nlweb:
+    build: /Users/jennifertran/Documents/NLWeb
+    image: nlwebai/nlweb:latest
+    ports:
+      - "8081:8080"
+    environment:
+      - NLWEB_MODE=prod
+    restart: unless-stopped
